@@ -36,7 +36,7 @@ Reserved-signal replay checks retained:
 
 The broader first pass selected 3,534 commands and also compressed output by about 93%, but it could hide content-bearing `git diff`, `git log`, and GitHub body reads. That treatment was rejected. The promoted path deliberately leaves those reads unwrapped and reserves signal slots before trimming routine output.
 
-This benchmark measures model-visible command output, not command execution speed. Exact raw output remains locally recoverable.
+This benchmark measures model-visible command output, not command execution speed. Exact raw output remains locally recoverable. See the [full replay receipt](docs/benchmarks/semantic-command-replay-2026-08-31.md).
 
 ## What it is good at
 
