@@ -1,6 +1,6 @@
 # Lazy Commander
 
-**Keep exact command output recoverable while giving coding agents only the part worth their attention.**
+**Remove repetitive command output while preserving the evidence agents need to act.**
 
 Lazy Commander is a local-first command and task layer for coding-agent workflows. It can run noisy or persistent work, keep exact raw output in private local receipts, and return a bounded semantic view for the agent to consume. The short `lc` path is designed for ordinary shell work; longer-running orchestration keeps durable state and explicit finish conditions.
 
@@ -10,12 +10,12 @@ The core idea is simple:
 command / task
 -> run locally
 -> retain exact raw evidence privately
--> classify and compress routine output
+-> preserve ordered content and fold reversible repetition
 -> surface errors, test summaries, state changes, and other useful signals
 -> keep the raw receipt recoverable by id
 ```
 
-## Measured result
+## Historical projection replay
 
 A three-day replay on a heavily used Linux workstation contained **14,146 shell executions and 110.4 million output characters**. The promoted conservative admission policy selected 2,437 commands whose output was suitable for semantic projection.
 
@@ -26,7 +26,7 @@ A three-day replay on a heavily used Linux workstation contained **14,146 shell 
 | Reduction | — | **93.27%** |
 | Maximum projected view | — | **< 4,000 characters** |
 
-Reserved-signal replay checks retained:
+The older projector’s reserved-signal replay checks retained:
 
 - **431 / 431** plain errors;
 - **391 / 391** test summaries;
@@ -52,6 +52,11 @@ Lazy Commander is aimed at command families where exact output is valuable for r
 
 It deliberately avoids compressing source-, diff-, log-, or body-bearing reads when the content itself is the evidence the agent needs.
 
+These figures describe the earlier projector, not a current fidelity guarantee. Later auditing found
+that its allowlists and line limits could discard requested bodies, identities, and diagnostic
+context despite passing those checks. The current implementation uses a faithful bounded view and
+explicit expansion instead; the historical reduction percentage is not a target.
+
 ## Command model
 
 The compact shell path is `lc`:
@@ -60,9 +65,10 @@ The compact shell path is `lc`:
 lc 'COMMAND'
 lc -C /path/to/repo 'COMMAND'
 lc -r 'COMMAND'
+lc s -r ID --offset 0 --limit 7000
 ```
 
-By default, Lazy Commander emits a semantic receipt and keeps the complete raw output private. `-r` exposes raw output inline only within the configured bound. A receipt id can be reopened when exact evidence is needed.
+The ordinary view preserves ordered output, requested JSON values, identities, locations, and diagnostic context within a total character budget. It folds adjacent repetition and path prefixes reversibly, and marks any gaps. `-r` exposes raw output inline within the configured bound. Use the receipt id to page through captured bytes without executing again; continuation commands appear on stderr. `lc s -r ID` recovers all captured bytes. A capture-limit stop is explicitly reported as incomplete.
 
 Persistent work uses durable state with an objective, finish condition, current phase, evidence, and next action. Repeated effects are settled explicitly so an ambiguous write/send/create attempt is reconciled before another attempt.
 
@@ -70,11 +76,11 @@ Persistent work uses durable state with an objective, finish condition, current 
 
 - **Raw evidence stays recoverable.** Compression is a view, never destruction of the underlying command result.
 - **Bound the automatic view.** Unknown or noisy output should not receive an unlimited model-context budget.
-- **Keep consequential signals.** Errors, failed tests, state changes, and explicit status are selected before routine success noise.
+- **Preserve the evidence.** Requested content and diagnostic context stay visible; key names, counts, and a few error lines are not substitutes.
 - **Leave content-bearing reads alone.** Source, diffs, logs, and message bodies are often the evidence itself.
 - **Use ordinary tools for ordinary work.** Persistence and orchestration are for genuinely long-lived or repeated work, not every shell command.
 - **Measure the treatment.** A smaller projection that hides needed information loses.
 
 ## Status
 
-Lazy Commander is being extracted from a heavily dogfooded private coding-agent environment into this public repository. The benchmark above comes from that running implementation; the public packaging and standalone installation surface are being separated from private workstation and conversation-specific policy.
+Lazy Commander is being extracted from a heavily dogfooded private coding-agent environment into this public repository. The historical benchmark above came from an earlier running implementation; the public packaging and standalone installation surface are being separated from private workstation and conversation-specific policy.
