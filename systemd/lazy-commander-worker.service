@@ -1,0 +1,17 @@
+[Unit]
+Description=Lazy Commander observation-only workstation worker
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/lazy worker --worker workstation-default
+Restart=on-failure
+RestartSec=2
+UMask=0077
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

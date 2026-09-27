@@ -1,7 +1,7 @@
 # Shell output
 
 `lc 'COMMAND'` captures one execution; `-C PATH` selects another directory. Install the user hook
-and alias with `lc install --user` (first time: `python3 scripts/semantic_command.py install --user`); use `--workspace PATH` for an isolated install.
+and alias with `lazy-command install --user`; use `--workspace PATH` for an isolated install.
 
 ## Local notation
 
