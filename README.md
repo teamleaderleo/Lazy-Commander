@@ -81,6 +81,27 @@ Persistent work uses durable state with an objective, finish condition, current 
 - **Use ordinary tools for ordinary work.** Persistence and orchestration are for genuinely long-lived or repeated work, not every shell command.
 - **Measure the treatment.** A smaller projection that hides needed information loses.
 
+## Install `lc`
+
+Python 3.10+ and nothing else. From a clone:
+
+```bash
+git clone https://github.com/teamleaderleo/Lazy-Commander.git ~/Projects/Lazy-Commander
+python3 ~/Projects/Lazy-Commander/scripts/semantic_command.py install --user
+```
+
+This links `~/.local/bin/lc` to the clone and adds an opt-in Codex `PreToolUse` hook to
+`~/.codex/hooks.json` that routes noisy shell commands through `lc`. Use
+`install --workspace PATH` instead to scope the hook to one project. Any agent (or you) can also
+just call `lc 'COMMAND'` directly; Claude Code needs no hook for that.
+
+Receipts live under `~/.codex/state/lazy-command` (override with `LAZY_COMMAND_STATE_ROOT`).
+[docs/shell-output.md](docs/shell-output.md) documents the view notation and stored expansion.
+
+Run the tests with `python3 -m unittest discover -s tests`.
+
 ## Status
 
-Lazy Commander is being extracted from a heavily dogfooded private coding-agent environment into this public repository. The historical benchmark above came from an earlier running implementation; the public packaging and standalone installation surface are being separated from private workstation and conversation-specific policy.
+The `lc` shell path above is published here and is what the author runs daily. Lazy Commander's
+persistent-work layer (durable task state, brokers, compaction) is still being extracted from a
+private coding-agent environment and will follow.
