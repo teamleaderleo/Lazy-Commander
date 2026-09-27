@@ -30,8 +30,8 @@ event, an operator return, or an explicit decision—not repeated transcript
 reads.
 
 For routine Codex review or research, `chatgpt-carrier` means a fresh chat
-created inside `Codex Review Carriers`
-(`g-p-6a95a6dd7f4c81919a8d4fb28fb7a5a8`). A continuation may reuse only the
+created inside one dedicated ChatGPT project reserved for carriers (configure
+its name and `g-p-...` ID locally). A continuation may reuse only the
 exact chat created for that dispatch. Never select a recent, idle, unrelated,
 human-owned, or differently scoped chat; never move one into the project. If
 the project cannot be proved or its fresh composer is not empty, fall back to
