@@ -96,12 +96,29 @@ This links `~/.local/bin/lc` to the clone and adds an opt-in Codex `PreToolUse` 
 just call `lc 'COMMAND'` directly; Claude Code needs no hook for that.
 
 Receipts live under `~/.codex/state/lazy-command` (override with `LAZY_COMMAND_STATE_ROOT`).
-[docs/shell-output.md](docs/shell-output.md) documents the view notation and stored expansion.
+[references/shell-output.md](references/shell-output.md) documents the view notation and stored expansion.
 
-Run the tests with `python3 -m unittest discover -s tests`.
+## Persistent work (`lazy`)
+
+`scripts/lazy.py` is the durable broker for long-lived or repeated work: admitted tasks, exact
+wakes (`defer`, `due`, `tick`), leases (`claim`, `execute`, `settle`), an observation-only
+worker (`systemd/lazy-commander-worker.service`), lane and control planning, and multi-owner
+campaigns. It is Codex-oriented. Link it the same way if you want it:
+
+```bash
+ln -s ~/Projects/Lazy-Commander/scripts/lazy.py ~/.local/bin/lazy
+lazy --help
+```
+
+## Layout
+
+The repository root is also an agent skill: [SKILL.md](SKILL.md) plus [references/](references/)
+(start with [mechanism routing](references/mechanism-routing.md)). Point a skills directory at
+the clone to load it. `scripts/` holds `lc` (`semantic_command.py`), `lazy` (`lazy.py`) and their
+helpers; `tests/` covers both. Run the tests with `python3 -m unittest discover -s tests`
+(the carrier tests also need Node).
 
 ## Status
 
-The `lc` shell path above is published here and is what the author runs daily. Lazy Commander's
-persistent-work layer (durable task state, brokers, compaction) is still being extracted from a
-private coding-agent environment and will follow.
+Both halves are published and in the author's daily use. One workspace-specific portfolio
+compiler stayed private.
