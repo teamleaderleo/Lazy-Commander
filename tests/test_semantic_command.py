@@ -289,7 +289,7 @@ class SemanticCommandTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             command = (
-                ": rg needle repo-a; printf '%s\\n' 'QUARRY' "
+                ": rg needle repo-a; printf '%s\\n' 'PROJ-C' "
                 "'/Users/alice/Projects/proj-c/.github/workflows/a.yml:1:runs-on: self-hosted' "
                 "'/Users/alice/Projects/proj-c/.github/workflows/b.yml:2:runs-on: self-hosted' "
                 "'/Users/alice/Projects/proj-c/.github/workflows/c.yml:3:labels: example-ci'; "
@@ -298,7 +298,7 @@ class SemanticCommandTests(unittest.TestCase):
             )
             _identifier, result = self.run_stored(root, command)
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn("QUARRY", result.stdout)
+            self.assertIn("PROJ-C", result.stdout)
             self.assertIn('prefix "/Users/alice/Projects/proj-c/.github/workflows/"', result.stdout)
             self.assertIn('+ "a.yml:1:runs-on: self-hosted"', result.stdout)
             self.assertIn('+ "b.yml:2:runs-on: self-hosted"', result.stdout)
