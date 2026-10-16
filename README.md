@@ -4,6 +4,10 @@
 
 Lazy Commander is a local-first command and task layer for coding-agent workflows. It can run noisy or persistent work, keep exact raw output in private local receipts, and return a bounded semantic view for the agent to consume. The short `lc` path is designed for ordinary shell work; longer-running orchestration keeps durable state and explicit finish conditions.
 
+Its skill is a utility for output and durable waits, not the default project coordinator.
+Agents should start useful work promptly and continue independent tasks while jobs run.
+Use the durable machinery when a job needs it; ordinary coding does not need a routing or ledger step.
+
 The core idea is simple:
 
 ```text
